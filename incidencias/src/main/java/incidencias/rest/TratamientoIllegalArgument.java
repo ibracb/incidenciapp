@@ -4,6 +4,10 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
+/**
+ * Manejador de excepciones para IllegalArgumentException.
+ * Devuelve una respuesta HTTP 400 Bad Request con el mensaje de error.
+ */
 @Provider
 public class TratamientoIllegalArgument implements ExceptionMapper<IllegalArgumentException> {
 	@Override

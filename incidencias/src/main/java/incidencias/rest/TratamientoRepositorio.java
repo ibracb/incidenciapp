@@ -6,6 +6,10 @@ import javax.ws.rs.ext.Provider;
 
 import repositorio.RepositorioException;
 
+/**
+ * Manejador de excepciones para RepositorioException.
+ * Devuelve una respuesta HTTP 500 Internal Server Error con el mensaje de la excepción.
+ */
 @Provider
 public class TratamientoRepositorio implements ExceptionMapper<RepositorioException> {
 	@Override

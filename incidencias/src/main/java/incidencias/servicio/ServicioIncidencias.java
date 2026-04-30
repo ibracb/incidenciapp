@@ -5,13 +5,20 @@ import javax.ejb.Stateless;
 
 import incidencias.modelo.EstadoIncidencia;
 import incidencias.modelo.Incidencia;
+import incidencias.modelo.Tecnico;
 import repositorio.EntidadNoEncontrada;
 import repositorio.Repositorio;
 import repositorio.RepositorioException;
 
+/**
+ * Implementación del servicio de gestión de incidencias.
+ */
 @Stateless
 public class ServicioIncidencias implements IServicioIncidencias {
 	
+	/**
+	 * Repositorio de incidencias para almacenar y gestionar las incidencias registradas.
+	 */
 	@EJB(beanName="RepositorioIncidencias")
 	private Repositorio<Incidencia, String> repositorioIncidencias;
 	
@@ -43,9 +50,14 @@ public class ServicioIncidencias implements IServicioIncidencias {
 			throw new IllegalArgumentException("Formato del teléfono especificado inválido. Solo 9 dígitos debe ser");
 		}
 		Incidencia incidencia = repositorioIncidencias.getById(idIncidencia);
-		if(incidencia.getEstado() != EstadoIncidencia.PENDIENTE) {
-			throw new IllegalArgumentException("La incidencia debe encontrarse en estado PENDIENTE para asignarla");
+		if(incidencia.getEstado() == EstadoIncidencia.ASIGNADA) {
+			throw new IllegalArgumentException("La incidencia ya se encuentra asignada a un técnico");
 		}
+		if(incidencia.getEstado() == EstadoIncidencia.RESUELTA) {
+			throw new IllegalArgumentException("La incidencia ya se encuentra resuelta, no se puede asignar a un técnico");
+		}
+		Tecnico tecnico = new Tecnico(nombreTecnico, telefonoTecnico);
+		incidencia.setTecnico(tecnico);
 		incidencia.setEstado(EstadoIncidencia.ASIGNADA);
 		repositorioIncidencias.update(incidencia);
 	}
@@ -56,8 +68,11 @@ public class ServicioIncidencias implements IServicioIncidencias {
 			throw new IllegalArgumentException("No se ha especificado ninguna incidencia");
 		}
 		Incidencia incidencia = repositorioIncidencias.getById(idIncidencia);
-		if(incidencia.getEstado() != EstadoIncidencia.ASIGNADA) {
-			throw new IllegalArgumentException("La incidencia debe encontrarse en estado ASIGNADA para poder ser resuelta");
+		if(incidencia.getEstado() == EstadoIncidencia.PENDIENTE) {
+			throw new IllegalArgumentException("La incidencia no se encuentra asignada a ningún técnico, no se puede resolver");
+		}
+		if(incidencia.getEstado() == EstadoIncidencia.RESUELTA) {
+			throw new IllegalArgumentException("La incidencia ya se encuentra resuelta");
 		}
 		incidencia.setEstado(EstadoIncidencia.RESUELTA);
 		repositorioIncidencias.update(incidencia);

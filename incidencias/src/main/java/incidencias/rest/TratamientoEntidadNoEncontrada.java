@@ -6,6 +6,10 @@ import javax.ws.rs.ext.Provider;
 
 import repositorio.EntidadNoEncontrada;
 
+/**
+ * Manejador de excepciones para EntidadNoEncontrada.
+ * Devuelve una respuesta HTTP 404 Not Found con el mensaje de la excepción.
+ */
 @Provider
 public class TratamientoEntidadNoEncontrada implements ExceptionMapper<EntidadNoEncontrada> {
 	@Override

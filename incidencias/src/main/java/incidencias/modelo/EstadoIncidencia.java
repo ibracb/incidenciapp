@@ -1,7 +1,7 @@
 package incidencias.modelo;
 
 /**
- * Enum que representa los posibles estados de una incidencia.
+ * Enumerado que representa los posibles estados de una incidencia.
  */
 public enum EstadoIncidencia {
 	
