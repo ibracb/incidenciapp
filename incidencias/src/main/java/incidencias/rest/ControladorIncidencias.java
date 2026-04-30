@@ -3,7 +3,6 @@ package incidencias.rest;
 import java.net.URI;
 
 import javax.ejb.EJB;
-import javax.ejb.EJBTransactionRolledbackException;
 import javax.ejb.Stateless;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
@@ -58,24 +57,9 @@ public class ControladorIncidencias {
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response registrarIncidencia(RegistrarIncidenciaDto dto) throws RepositorioException {
-		try{
 			String id = servicioIncidencias.registrarIncidencia(dto.getDescripcion(), dto.getUbicacion());
 			URI nuevaURL = this.uriInfo.getAbsolutePathBuilder().path(id).build();
 			return Response.created(nuevaURL).build();
-		}
-		catch (EJBTransactionRolledbackException e) {
-	    	if (e.getCause() instanceof IllegalArgumentException) {
-		        return Response.status(Response.Status.BAD_REQUEST)
-		                       .entity(e.getCause().getMessage())
-		                       .build();
-		    }
-	    	if (e.getCause() instanceof RepositorioException) {
-		        return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-		                       .entity("Error al acceder al repositorio de incidencias")
-		                       .build();
-		    }
-		    throw new RuntimeException(e);
-		}
 	}
 	
 	/**
@@ -93,28 +77,8 @@ public class ControladorIncidencias {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response asignarIncidencia(@PathParam("id") String idIncidencia, AsignarIncidenciaDto dto) 
 	        throws RepositorioException, EntidadNoEncontrada {
-	    try {
 	        servicioIncidencias.asignarIncidencia(idIncidencia, dto.getNombreTecnico(), dto.getTelefonoTecnico());
 	        return Response.noContent().build();
-	    }
-	    catch (EJBTransactionRolledbackException e) {
-	    	if (e.getCause() instanceof EntidadNoEncontrada) {
-		        return Response.status(Response.Status.NOT_FOUND)
-		                       .entity(e.getCause().getMessage())
-		                       .build();
-		    }
-	    	if (e.getCause() instanceof IllegalArgumentException) {
-		        return Response.status(Response.Status.BAD_REQUEST)
-		                       .entity(e.getCause().getMessage())
-		                       .build();
-		    }
-	    	if (e.getCause() instanceof RepositorioException) {
-		        return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-		                       .entity("Error al acceder al repositorio de incidencias")
-		                       .build();
-		    }
-		    throw new RuntimeException(e);
-		}
 	}
 	
 	/**
@@ -129,28 +93,8 @@ public class ControladorIncidencias {
 	@PATCH
 	@Path("/{id}/resolver")
 	public Response resolverIncidencia(@PathParam("id") String idIncidencia) throws RepositorioException, EntidadNoEncontrada {
-		try{
 			servicioIncidencias.resolverIncidencia(idIncidencia);
 			return Response.noContent().build();
-		}
-		catch (EJBTransactionRolledbackException e) {
-	    	if (e.getCause() instanceof EntidadNoEncontrada) {
-		        return Response.status(Response.Status.NOT_FOUND)
-		                       .entity(e.getCause().getMessage())
-		                       .build();
-		    }
-	    	if (e.getCause() instanceof IllegalArgumentException) {
-		        return Response.status(Response.Status.BAD_REQUEST)
-		                       .entity(e.getCause().getMessage())
-		                       .build();
-		    }
-	    	if (e.getCause() instanceof RepositorioException) {
-		        return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-		                       .entity("Error al acceder al repositorio de incidencias")
-		                       .build();
-		    }
-		    throw new RuntimeException(e);
-		}
 	}
 
 }
