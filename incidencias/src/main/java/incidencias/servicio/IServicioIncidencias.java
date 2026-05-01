@@ -1,5 +1,7 @@
 package incidencias.servicio;
 
+import java.util.List;
+
 import repositorio.EntidadNoEncontrada;
 import repositorio.RepositorioException;
 
@@ -34,5 +36,12 @@ public interface IServicioIncidencias {
 	 * @throws EntidadNoEncontrada  Si no se encuentra la incidencia con el ID proporcionado.
 	 */
 	void resolverIncidencia(String idIncidencia) throws RepositorioException, EntidadNoEncontrada;
+	
+	/**
+	 * Consulta todas las incidencias que están pendientes de resolución.
+	 * @return Una lista de resúmenes de las incidencias pendientes.
+	 * @throws RepositorioException	 Si ocurre un error al acceder al repositorio de incidencias.
+	 */
+	List<IncidenciaResumen> consultarIncidenciasPendientes() throws RepositorioException;
 	
 }

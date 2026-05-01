@@ -17,7 +17,7 @@ public class Incidencia implements Identificable, Serializable {
 	private String id;
 	
 	/**
-	 * Descripción detallada de la incidencia reportada.
+	 * Descripción de la incidencia reportada.
 	 */
 	private String descripcion;
 	
@@ -44,7 +44,7 @@ public class Incidencia implements Identificable, Serializable {
 	/**
 	 * Constructor de la clase Incidencia.
 	 * 
-	 * @param descripcion Descripción detallada de la incidencia reportada.
+	 * @param descripcion Descripción de la incidencia reportada.
 	 * @param ubicacion   Ubicación donde se ha reportado la incidencia.
 	 * @param tecnico     Técnico asignado para resolver la incidencia.
 	 */
@@ -72,8 +72,8 @@ public class Incidencia implements Identificable, Serializable {
 	}
 
 	/**
-	 * Obtiene la descripción detallada de la incidencia reportada.
-	 * @return La descripción detallada de la incidencia reportada.
+	 * Obtiene la descripción de la incidencia reportada.
+	 * @return La descripción de la incidencia reportada.
 	 */
 	public String getDescripcion() {
 		return descripcion;
@@ -81,7 +81,7 @@ public class Incidencia implements Identificable, Serializable {
 
 	/**
 	 * Establece la descripción detallada de la incidencia reportada.
-	 * @param descripcion La descripción detallada de la incidencia reportada a establecer.
+	 * @param descripcion La descripción de la incidencia reportada a establecer.
 	 */
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;

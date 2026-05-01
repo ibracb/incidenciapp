@@ -1,13 +1,16 @@
 package incidencias.servicio;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
 import incidencias.modelo.EstadoIncidencia;
 import incidencias.modelo.Incidencia;
 import incidencias.modelo.Tecnico;
+import incidencias.repositorio.RepositorioIncidenciasAdHoc;
 import repositorio.EntidadNoEncontrada;
-import repositorio.Repositorio;
 import repositorio.RepositorioException;
 
 /**
@@ -20,7 +23,7 @@ public class ServicioIncidencias implements IServicioIncidencias {
 	 * Repositorio de incidencias para almacenar y gestionar las incidencias registradas.
 	 */
 	@EJB(beanName="RepositorioIncidencias")
-	private Repositorio<Incidencia, String> repositorioIncidencias;
+	private RepositorioIncidenciasAdHoc repositorioIncidencias;
 	
 	@Override
 	public String registrarIncidencia(String descripcion, String ubicacion) throws RepositorioException {
@@ -76,6 +79,14 @@ public class ServicioIncidencias implements IServicioIncidencias {
 		}
 		incidencia.setEstado(EstadoIncidencia.RESUELTA);
 		repositorioIncidencias.update(incidencia);
+	}
+
+	@Override
+	public List<IncidenciaResumen> consultarIncidenciasPendientes() throws RepositorioException {
+		return repositorioIncidencias.getPendientes().stream()
+				.map(incidencia -> new IncidenciaResumen(incidencia.getId(), incidencia.getDescripcion(),
+						incidencia.getFecha()))
+				.collect(Collectors.toList());
 	}
 
 }

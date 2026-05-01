@@ -1,15 +1,19 @@
 package incidencias.rest;
 
 import java.net.URI;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.PATCH;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -18,6 +22,7 @@ import javax.ws.rs.core.UriInfo;
 import incidencias.rest.dto.AsignarIncidenciaDto;
 import incidencias.rest.dto.RegistrarIncidenciaDto;
 import incidencias.servicio.IServicioIncidencias;
+import incidencias.servicio.IncidenciaResumen;
 import repositorio.EntidadNoEncontrada;
 import repositorio.RepositorioException;
 
@@ -95,6 +100,29 @@ public class ControladorIncidencias {
 	public Response resolverIncidencia(@PathParam("id") String idIncidencia) throws RepositorioException, EntidadNoEncontrada {
 			servicioIncidencias.resolverIncidencia(idIncidencia);
 			return Response.noContent().build();
+	}
+	
+	/**
+	 * Endpoint para consultar todas las incidencias que están pendientes de resolución.
+	 * Devuelve una lista de resúmenes de las incidencias pendientes, cada uno con un enlace a su recurso individual.
+	 * @return Una respuesta HTTP con una lista de resúmenes de las incidencias pendientes en formato JSON.
+	 * @throws RepositorioException Si ocurre un error al acceder al repositorio de incidencias.
+	 */
+	@GET
+	@Path("/pendientes")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response consultarIncidenciasPendientes() throws RepositorioException {
+		List<IncidenciaResumen> resultado = servicioIncidencias.consultarIncidenciasPendientes();
+		List<ResumenExtendido> extendido = new LinkedList<>();
+		resultado.forEach(incidenciaResumen -> {
+			ResumenExtendido resumenExtendido = new ResumenExtendido();
+			resumenExtendido.setResumen(incidenciaResumen);
+			String id = incidenciaResumen.getId();
+			URI nuevaURL = this.uriInfo.getAbsolutePathBuilder().path(id).build();
+			resumenExtendido.setUrl(nuevaURL.toString());
+			extendido.add(resumenExtendido);
+		});
+		return Response.ok(extendido).build();
 	}
 
 }
