@@ -1,58 +1,23 @@
 package utils;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.UUID;
 
-import javax.xml.datatype.DatatypeFactory;
-import javax.xml.datatype.XMLGregorianCalendar;
-
+/**
+ * Clase de utilidades generales.
+ */
 public class Utils {
 	
-	public static XMLGregorianCalendar createFecha(Date fecha) {
-
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(fecha);
-		
-		XMLGregorianCalendar fechaXML = null;
-
-		try {
-			fechaXML = DatatypeFactory.newInstance().newXMLGregorianCalendar();
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-
-		fechaXML.setDay(calendar.get(Calendar.DAY_OF_MONTH));
-		fechaXML.setMonth(calendar.get(Calendar.MONTH) + 1);
-		fechaXML.setYear(calendar.get(Calendar.YEAR));
-
-		return fechaXML;
+	/**
+	 * Constructor privado para evitar la instanciación de la clase Utils.
+	 */
+	private Utils() {
 	}
 	
-	public static String formatoFecha(Calendar fecha) {
-		
-		DateFormat formateador = new SimpleDateFormat("dd-MM-yyyy");
-		
-		return formateador.format(fecha.getTime());
-	}
-	
-	public static Date dateFromString(String fechaString) {
-		
-		DateFormat formateador = new SimpleDateFormat("dd-MM-yyyy");
-		
-		try {
-			return formateador.parse(fechaString);
-		} 
-		catch (ParseException e) {
-			throw new RuntimeException(e);
-		}
-	}
-	
+	/**
+	 * Genera un ID único utilizando UUID.
+	 * @return Un ID único como cadena.
+	 */
 	public static String createId() {
-		
 		return UUID.randomUUID().toString();
 	}
 }
