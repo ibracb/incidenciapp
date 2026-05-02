@@ -145,6 +145,19 @@ El artefacto queda disponible en:
 http://localhost:8080/incidencias/
 ```
 
+---
+
+### Alternativa: arrancar y desplegar en un solo paso con `wildfly:run`
+
+Si se prefiere no arrancar WildFly manualmente, es posible combinar los pasos 3 y 5 en un único comando. Este goal arranca WildFly (usando la ruta configurada en `<jbossHome>`), despliega la aplicación y mantiene el servidor en ejecución:
+
+```bash
+cd incidencias
+mvn wildfly:run
+```
+
+> **Nota:** con `wildfly:run` el servidor permanece activo en primer plano. Para detenerlo, pulsar `Ctrl+C`.
+
 ### 6. Verificar el despliegue
 
 ```bash
