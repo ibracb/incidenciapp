@@ -192,6 +192,15 @@ Sin cuerpo. La cabecera `Location` apunta al recurso creado:
 Location: http://localhost:8080/incidencias/api/incidencias/a3f1e2d4-7c89-4b10-9f3e-1a2b3c4d5e6f
 ```
 
+**Respuesta `400 Bad Request`** — alguno de los campos obligatorios está ausente o en blanco. El cuerpo contiene el mensaje de error:
+
+| Situación | Mensaje |
+|---|---|
+| `descripcion` ausente o en blanco | `No se ha especificado ninguna descripción de la incidencia` |
+| `ubicacion` ausente o en blanco | `No se ha especificado la ubicación de la incidencia` |
+
+**Respuesta `500 Internal Server Error`** — error interno al acceder al repositorio. El cuerpo contiene el mensaje de la excepción.
+
 ---
 
 ### `PATCH /incidencias/{id}/asignar`
@@ -221,11 +230,21 @@ Asigna un técnico a una incidencia existente. El estado de la incidencia pasa d
 
 **Respuesta `204 No Content`** — asignación realizada correctamente. Sin cuerpo.
 
+**Respuesta `400 Bad Request`** — la petición no puede procesarse por datos inválidos o estado incorrecto de la incidencia. El cuerpo contiene el mensaje de error:
+
+| Situación | Mensaje |
+|---|---|
+| `nombreTecnico` ausente o en blanco | `No se ha especificado ningún nombre del técnico` |
+| `telefonoTecnico` ausente o en blanco | `No se ha especificado ningún teléfono del técnico` |
+| `telefonoTecnico` no tiene exactamente 9 dígitos | `Formato del teléfono especificado inválido. Solo 9 dígitos debe ser` |
+| La incidencia ya está en estado `ASIGNADA` | `La incidencia ya se encuentra asignada a un técnico` |
+| La incidencia ya está en estado `RESUELTA` | `La incidencia ya se encuentra resuelta, no se puede asignar a un técnico` |
+
 **Respuesta `404 Not Found`** — no existe ninguna incidencia con el `id` indicado.
 
----
+**Respuesta `500 Internal Server Error`** — error interno al acceder al repositorio. El cuerpo contiene el mensaje de la excepción.
 
-### `PATCH /incidencias/{id}/resolver`
+---
 
 Marca una incidencia como resuelta. El estado pasa de `ASIGNADA` a `RESUELTA`.
 
@@ -239,7 +258,16 @@ Sin cuerpo en la petición.
 
 **Respuesta `204 No Content`** — incidencia marcada como resuelta. Sin cuerpo.
 
+**Respuesta `400 Bad Request`** — la incidencia no se puede resolver por su estado actual. El cuerpo contiene el mensaje de error:
+
+| Situación | Mensaje |
+|---|---|
+| La incidencia está en estado `PENDIENTE` (sin técnico asignado) | `La incidencia no se encuentra asignada a ningún técnico, no se puede resolver` |
+| La incidencia ya está en estado `RESUELTA` | `La incidencia ya se encuentra resuelta` |
+
 **Respuesta `404 Not Found`** — no existe ninguna incidencia con el `id` indicado.
+
+**Respuesta `500 Internal Server Error`** — error interno al acceder al repositorio. El cuerpo contiene el mensaje de la excepción.
 
 ---
 
@@ -271,3 +299,5 @@ Devuelve la lista de incidencias en estado `PENDIENTE`.
 ```
 
 Si no hay incidencias pendientes, devuelve un array vacío `[]`.
+
+**Respuesta `500 Internal Server Error`** — error interno al acceder al repositorio. El cuerpo contiene el mensaje de la excepción.
