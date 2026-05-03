@@ -259,6 +259,8 @@ Asigna un técnico a una incidencia existente. El estado de la incidencia pasa d
 
 ---
 
+### `PATCH /incidencias/{id}/resolver`
+
 Marca una incidencia como resuelta. El estado pasa de `ASIGNADA` a `RESUELTA`.
 
 **Parámetros de ruta:**
