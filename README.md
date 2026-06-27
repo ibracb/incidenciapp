@@ -1,4 +1,4 @@
-# incidencias-arso
+# Servicio de incidencias
 
 Servicio REST para la gestión de incidencias desarrollado con Java EE 8 (JAX-RS + EJB) y desplegado en WildFly 20.
 
