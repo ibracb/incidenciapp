@@ -1,0 +1,27 @@
+services:
+  mongodb: 
+    image: mongo:8
+    container_name: ${MONGODB_CONTAINER_NAME}
+    restart: always
+    ports:
+      - "27018:27017"
+    volumes:
+      - mongo_data:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+  mongo-express: 
+    image: mongo-express:1.0.2-20
+    container_name: ${MONGO_EXPRESS_CONTAINER_NAME}
+    restart: always
+    ports:
+      - "8082:8081"
+    environment:
+      ME_CONFIG_BASICAUTH: ${ME_CONFIG_BASICAUTH}
+      ME_CONFIG_BASICAUTH_USERNAME: ${ME_CONFIG_BASICAUTH_USERNAME}
+      ME_CONFIG_BASICAUTH_PASSWORD: ${ME_CONFIG_BASICAUTH_PASSWORD}
+      ME_CONFIG_MONGODB_URL: ${ME_CONFIG_MONGODB_URL}
+    depends_on:
+      - mongodb
+volumes:
+  mongo_data:

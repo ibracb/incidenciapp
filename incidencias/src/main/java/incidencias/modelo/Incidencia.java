@@ -3,6 +3,10 @@ package incidencias.modelo;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+import org.bson.BsonType;
+import org.bson.codecs.pojo.annotations.BsonId;
+import org.bson.codecs.pojo.annotations.BsonRepresentation;
+
 import repositorio.Identificable;
 
 /**
@@ -14,6 +18,8 @@ public class Incidencia implements Identificable, Serializable {
 	/**
 	 * Identificador único de la incidencia.
 	 */
+	@BsonId
+	@BsonRepresentation(BsonType.OBJECT_ID)
 	private String id;
 	
 	/**
@@ -53,6 +59,12 @@ public class Incidencia implements Identificable, Serializable {
 		this.ubicacion = ubicacion;
 		this.estado = EstadoIncidencia.PENDIENTE;
 		this.fecha = LocalDateTime.now();
+	}
+	
+	/**
+	 * Constructor vacío de la clase Incidencia.
+	 */
+	protected Incidencia() {
 	}
 
 	/**

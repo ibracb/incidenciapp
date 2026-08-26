@@ -2,6 +2,7 @@ package incidencias.repositorio;
 
 import java.util.List;
 
+import incidencias.modelo.EstadoIncidencia;
 import incidencias.modelo.Incidencia;
 import repositorio.RepositorioException;
 import repositorio.RepositorioString;
@@ -12,11 +13,12 @@ import repositorio.RepositorioString;
 public interface RepositorioIncidenciasAdHoc extends RepositorioString<Incidencia> {
 	
 	/**
-	 * Obtiene una lista de todas las incidencias que están en estado pendiente.
+	 * Obtiene una lista de incidencias filtradas por estado, ordenadas por fecha descendente (más recientes primero).
 	 * 
-	 * @return Lista de incidencias pendientes.
+	 * @param estado Estado por el que filtrar (null para todos).
+	 * @return Lista de incidencias.
 	 * @throws RepositorioException Si ocurre un error al acceder al repositorio.
 	 */
-	List<Incidencia> getPendientes() throws RepositorioException;
+	List<Incidencia> findByEstado(EstadoIncidencia estado) throws RepositorioException;
 	
 }

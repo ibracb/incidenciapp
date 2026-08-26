@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IncidenciApp</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header class="header" role="banner">
+    <img src="assets/incidenciapp-logo.svg" alt="" class="logo" aria-hidden="true">
+    <h1>IncidenciApp</h1>
+  </header>
+
+  <nav class="tabs" role="tablist" aria-label="Filtrar incidencias por estado">
+    <button class="tab-btn activo" role="tab" aria-selected="true" data-estado="">Todas</button>
+    <button class="tab-btn" role="tab" aria-selected="false" data-estado="PENDIENTE">Pendientes</button>
+    <button class="tab-btn" role="tab" aria-selected="false" data-estado="ASIGNADA">Asignadas</button>
+    <button class="tab-btn" role="tab" aria-selected="false" data-estado="RESUELTA">Resueltas</button>
+  </nav>
+
+  <main class="main" role="main">
+    <div class="tabla-wrapper">
+      <table class="tabla-incidencias" aria-label="Listado de incidencias">
+        <thead>
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Descripción</th>
+            <th scope="col">Fecha</th>
+            <th scope="col">Estado</th>
+            <th scope="col">Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="tbody-incidencias">
+          <tr class="empty-state">
+            <td colspan="5">Cargando incidencias...</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <button class="fab" id="btn-nueva" aria-label="Nueva incidencia" title="Nueva incidencia">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+      <line x1="12" y1="5" x2="12" y2="19"></line>
+      <line x1="5" y1="12" x2="19" y2="12"></line>
+    </svg>
+  </button>
+
+  <div class="modal-overlay" id="modal-crear" role="dialog" aria-modal="true" aria-labelledby="modal-crear-titulo" hidden>
+    <div class="modal">
+      <header class="modal-header">
+        <h2 id="modal-crear-titulo">Nueva incidencia</h2>
+        <button type="button" class="btn-cerrar" aria-label="Cerrar" data-cerrar-modal="modal-crear">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </header>
+      <form id="form-crear" class="form" novalidate>
+        <div class="form-group">
+          <label for="descripcion">Descripción <span class="requerido" aria-hidden="true">*</span></label>
+          <textarea id="descripcion" name="descripcion" rows="4" required placeholder="Describe la incidencia..."></textarea>
+        </div>
+        <div class="form-group">
+          <label for="ubicacion">Ubicación <span class="requerido" aria-hidden="true">*</span></label>
+          <input type="text" id="ubicacion" name="ubicacion" required placeholder="Ej: Planta 2, Sala de servidores">
+        </div>
+        <div class="form-actions">
+          <button type="button" class="btn btn-secondary" data-cerrar-modal="modal-crear">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Crear</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="modal-asignar" role="dialog" aria-modal="true" aria-labelledby="modal-asignar-titulo" hidden>
+    <div class="modal">
+      <header class="modal-header">
+        <h2 id="modal-asignar-titulo">Asignar técnico</h2>
+        <button type="button" class="btn-cerrar" aria-label="Cerrar" data-cerrar-modal="modal-asignar">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </header>
+      <form id="form-asignar" class="form" novalidate>
+        <input type="hidden" name="idIncidencia" id="asignar-id">
+        <div class="form-group">
+          <label for="nombreTecnico">Nombre del técnico <span class="requerido" aria-hidden="true">*</span></label>
+          <input type="text" id="nombreTecnico" name="nombreTecnico" required placeholder="Nombre completo">
+        </div>
+        <div class="form-group">
+          <label for="telefonoTecnico">Teléfono <span class="requerido" aria-hidden="true">*</span></label>
+          <input type="tel" id="telefonoTecnico" name="telefonoTecnico" pattern="\d{9}" maxlength="9" required placeholder="9 dígitos" aria-describedby="tel-help">
+          <span id="tel-help" class="ayuda">Solo 9 dígitos numéricos</span>
+        </div>
+        <div class="form-actions">
+          <button type="button" class="btn btn-secondary" data-cerrar-modal="modal-asignar">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Asignar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="modal-confirmar" role="dialog" aria-modal="true" aria-labelledby="modal-confirmar-titulo" hidden>
+    <div class="modal modal-confirmar">
+      <header class="modal-header">
+        <h2 id="modal-confirmar-titulo">Confirmar acción</h2>
+      </header>
+      <div class="modal-body">
+        <p id="modal-confirmar-mensaje"></p>
+      </div>
+      <div class="form-actions">
+        <button type="button" class="btn btn-secondary" data-cerrar-modal="modal-confirmar" data-accion="cancelar">Cancelar</button>
+        <button type="button" class="btn btn-danger" id="btn-confirmar-accion" data-accion="confirmar">Resolver</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast-container" class="toast-container" aria-live="polite" aria-atomic="true"></div>
+
+  <script src="js/api.js" type="module"></script>
+  <script src="js/ui.js" type="module"></script>
+  <script src="js/app.js" type="module"></script>
+</body>
+</html>

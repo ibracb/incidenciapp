@@ -6,7 +6,6 @@ import java.util.List;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.PATCH;
@@ -14,11 +13,13 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
+import incidencias.modelo.EstadoIncidencia;
 import incidencias.rest.dto.AsignarIncidenciaDto;
 import incidencias.rest.dto.RegistrarIncidenciaDto;
 import incidencias.servicio.IServicioIncidencias;
@@ -44,12 +45,6 @@ public class ControladorIncidencias {
 	 */
 	@Context
 	private UriInfo uriInfo;
-	
-	/**
-	 * Contexto para obtener información de la solicitud HTTP.
-	 */
-	@Context
-	private HttpServletRequest servletRequest;
 	
 	/**
 	 * Endpoint para registrar una nueva incidencia.
@@ -103,26 +98,34 @@ public class ControladorIncidencias {
 	}
 	
 	/**
-	 * Endpoint para consultar todas las incidencias que están pendientes de resolución.
-	 * Devuelve una lista de resúmenes de las incidencias pendientes, cada uno con un enlace a su recurso individual.
-	 * @return Una respuesta HTTP con una lista de resúmenes de las incidencias pendientes en formato JSON.
+	 * Endpoint para consultar incidencias filtradas por estado, ordenadas por fecha descendente (más recientes primero).
+	 * @param estado Estado por el que filtrar: PENDIENTE, ASIGNADA, RESUELTA (opcional, si no se especifica devuelve todas).
+	 * @return Una respuesta HTTP con una lista de resúmenes extendidos de las incidencias en formato JSON.
 	 * @throws RepositorioException Si ocurre un error al acceder al repositorio de incidencias.
 	 */
 	@GET
-	@Path("/pendientes")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response consultarIncidenciasPendientes() throws RepositorioException {
-		List<IncidenciaResumen> resultado = servicioIncidencias.consultarIncidenciasPendientes();
-		List<ResumenExtendido> extendido = new LinkedList<>();
+	public Response consultarIncidencias(@QueryParam("estado") String estado) throws RepositorioException {
+		EstadoIncidencia estadoEnum = null;
+		if (estado != null && !estado.trim().isEmpty()) {
+			try {
+				estadoEnum = EstadoIncidencia.valueOf(estado.trim().toUpperCase());
+			} catch (IllegalArgumentException e) {
+				throw new IllegalArgumentException("Estado inválido: " + estado + ". Valores permitidos: PENDIENTE, ASIGNADA, RESUELTA");
+			}
+		}
+		
+		List<IncidenciaResumen> resultado = servicioIncidencias.consultarIncidencias(estadoEnum);
+		List<ResumenExtendido> extendidos = new LinkedList<>();
 		resultado.forEach(incidenciaResumen -> {
 			ResumenExtendido resumenExtendido = new ResumenExtendido();
 			resumenExtendido.setResumen(incidenciaResumen);
 			String id = incidenciaResumen.getId();
 			URI nuevaURL = this.uriInfo.getAbsolutePathBuilder().path(id).build();
 			resumenExtendido.setUrl(nuevaURL.toString());
-			extendido.add(resumenExtendido);
+			extendidos.add(resumenExtendido);
 		});
-		return Response.ok(extendido).build();
+		return Response.ok(extendidos).build();
 	}
 
 }

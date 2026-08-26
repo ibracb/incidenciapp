@@ -21,7 +21,7 @@ public class IncidenciaResumen {
 	/**
 	 * Fecha y hora en que se reportó la incidencia.
 	 */
-	private LocalDateTime fecha;
+	private String fecha;
 	
 	/**
 	 * Constructor de la clase IncidenciaResumen.
@@ -33,7 +33,7 @@ public class IncidenciaResumen {
 	public IncidenciaResumen(String id, String descripcion, LocalDateTime fecha) {
 		this.id = id;
 		this.descripcion = descripcion;
-		this.fecha = fecha;
+		this.fecha = fecha.toString();
 	}
 	
 	/**
@@ -56,7 +56,7 @@ public class IncidenciaResumen {
 	 * Obtiene la fecha y hora en que se reportó la incidencia.
 	 * @return La fecha y hora en que se reportó la incidencia.
 	 */
-	public LocalDateTime getFecha() {
+	public String getFecha() {
 		return fecha;
 	}
 

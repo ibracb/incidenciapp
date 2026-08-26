@@ -2,6 +2,8 @@ package incidencias.rest.dto;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.NotBlank;
+
 /**
  * DTO para registrar una nueva incidencia.
  */
@@ -11,11 +13,13 @@ public class RegistrarIncidenciaDto implements Serializable {
 	/**
 	 * Descripción de la incidencia.
 	 */
+	@NotBlank
 	private String descripcion;
 	
 	/**
 	 * Ubicación de la incidencia.
 	 */
+	@NotBlank
 	private String ubicacion;
 
 	/**

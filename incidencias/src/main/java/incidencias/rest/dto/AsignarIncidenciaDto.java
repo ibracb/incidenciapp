@@ -2,6 +2,8 @@ package incidencias.rest.dto;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.NotBlank;
+
 /**
  * DTO para asignar una incidencia a un técnico.
  */
@@ -11,11 +13,13 @@ public class AsignarIncidenciaDto implements Serializable {
 	/**
 	 * Nombre del técnico asignado a la incidencia.
 	 */
+	@NotBlank
 	private String nombreTecnico;
 	
 	/**
 	 * Teléfono del técnico asignado a la incidencia.
 	 */
+	@NotBlank
 	private String telefonoTecnico;
 
 	/**

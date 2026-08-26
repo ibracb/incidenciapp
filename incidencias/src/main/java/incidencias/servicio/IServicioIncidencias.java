@@ -2,6 +2,7 @@ package incidencias.servicio;
 
 import java.util.List;
 
+import incidencias.modelo.EstadoIncidencia;
 import repositorio.EntidadNoEncontrada;
 import repositorio.RepositorioException;
 
@@ -38,10 +39,11 @@ public interface IServicioIncidencias {
 	void resolverIncidencia(String idIncidencia) throws RepositorioException, EntidadNoEncontrada;
 	
 	/**
-	 * Consulta todas las incidencias que están pendientes de resolución.
-	 * @return Una lista de resúmenes de las incidencias pendientes.
+	 * Consulta incidencias filtradas por estado, ordenadas por fecha descendente (más recientes primero).
+	 * @param estado Estado por el que filtrar (null para todos).
+	 * @return Una lista de resúmenes de las incidencias.
 	 * @throws RepositorioException	 Si ocurre un error al acceder al repositorio de incidencias.
 	 */
-	List<IncidenciaResumen> consultarIncidenciasPendientes() throws RepositorioException;
+	List<IncidenciaResumen> consultarIncidencias(EstadoIncidencia estado) throws RepositorioException;
 	
 }

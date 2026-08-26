@@ -28,6 +28,12 @@ public class Tecnico implements Serializable {
 		this.nombre = nombre;
 		this.telefono = telefono;
 	}
+	
+	/**
+	 * Constructor vacío de la clase Tecnico.
+	 */
+	protected Tecnico() {
+	}
 
 	/**
 	 * Obtiene el nombre del técnico.

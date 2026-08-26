@@ -82,11 +82,14 @@ public class ServicioIncidencias implements IServicioIncidencias {
 	}
 
 	@Override
-	public List<IncidenciaResumen> consultarIncidenciasPendientes() throws RepositorioException {
-		return repositorioIncidencias.getPendientes().stream()
-				.map(incidencia -> new IncidenciaResumen(incidencia.getId(), incidencia.getDescripcion(),
-						incidencia.getFecha()))
+	public List<IncidenciaResumen> consultarIncidencias(EstadoIncidencia estado) throws RepositorioException {
+		return repositorioIncidencias.findByEstado(estado).stream()
+				.map(incidencia -> toIncidenciaResumen(incidencia))
 				.collect(Collectors.toList());
+	}
+	
+	private IncidenciaResumen toIncidenciaResumen(Incidencia incidencia) {
+		return new IncidenciaResumen(incidencia.getId(), incidencia.getDescripcion(), incidencia.getFecha());
 	}
 
 }
