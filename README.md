@@ -36,10 +36,10 @@ incidenciapp/
 │       ├── resources/           # Classpath resources
 │       └── webapp/              # Web resources
 ├── postman/                     # Integration API tests with Postman
-├── .env.example                 # Variables de entorno de ejemplo
-├── .gitignore                   # Archivos ignorados por Git
-├── compose.yaml                 # Fichero de Docker Compose
-└── README.md                    # Documentación principal
+├── .env.example                 # Example environment variables
+├── .gitignore                   # Files ignored by Git
+├── compose.yaml                 # Docker Compose file
+└── README.md                    # Main documentation
 ```
 
 ## Requirements
