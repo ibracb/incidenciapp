@@ -7,6 +7,7 @@
 > An app that allows residents of a building to report issues and enables the property managers to handle them by assigning them to technicians.
 
 ![Java](https://img.shields.io/badge/Java-11-blue?style=flat&logo=openjdk&logoColor=white)
+![Java EE](https://img.shields.io/badge/Java%20EE%208-%28EJB%29-007396?style=flat)
 ![Maven](https://img.shields.io/badge/Maven-3-red?style=flat&logo=apachemaven&logoColor=white)
 ![WildFly](https://img.shields.io/badge/WildFly-20.0.1-red?style=flat)
 ![MongoDB](https://img.shields.io/badge/MongoDB-4.x-47A248?style=flat&logo=mongodb&logoColor=white)
