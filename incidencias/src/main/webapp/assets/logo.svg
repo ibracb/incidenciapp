@@ -1,15 +1,15 @@
-<svg width="640" height="200" viewBox="0 0 640 200" xmlns="http://www.w3.org/2000/svg">
+<svg width="180" height="200" viewBox="0 0 180 200" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <linearGradient id="buildingGrad" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#E8791A"/>
-      <stop offset="100%" stop-color="#C4590C"/>
+      <stop offset="0%" stop-color="#2E7BC4"/>
+      <stop offset="100%" stop-color="#1B4F82"/>
     </linearGradient>
   </defs>
 
   <!-- Icon: edificio -->
   <g transform="translate(30,20)">
     <rect x="0" y="20" width="90" height="130" rx="6" fill="url(#buildingGrad)"/>
-    <rect x="20" y="0" width="50" height="170" rx="6" fill="#F2A93B"/>
+    <rect x="20" y="0" width="50" height="170" rx="6" fill="#4E9AD9"/>
 
     <!-- ventanas -->
     <g fill="#FFFFFF" fill-opacity="0.9">
@@ -32,16 +32,13 @@
     </g>
 
     <!-- puerta -->
-    <rect x="35" y="132" width="20" height="18" rx="2" fill="#7A3E05"/>
+    <rect x="35" y="132" width="20" height="18" rx="2" fill="#0D2C4A"/>
 
     <!-- indicador de alerta -->
-    <circle cx="88" cy="10" r="16" fill="#FFC53D" stroke="#7A3E05" stroke-width="2"/>
-    <rect x="85" y="3" width="6" height="10" rx="2" fill="#7A3E05"/>
-    <circle cx="88" cy="17" r="2" fill="#7A3E05"/>
+    <circle cx="88" cy="10" r="16" fill="#FFC53D" stroke="#0D2C4A" stroke-width="2"/>
+    <rect x="85" y="3" width="6" height="10" rx="2" fill="#0D2C4A"/>
+    <circle cx="88" cy="17" r="2" fill="#0D2C4A"/>
   </g>
 
-  <!-- Texto -->
-  <g transform="translate(150,100)">
-    <text x="0" y="0" font-family="Georgia, 'Times New Roman', serif" font-size="46" font-weight="700" fill="#7A3E05">Incidenci<tspan fill="#E8791A">App</tspan></text>
-  </g>
+  <!-- (texto eliminado, solo icono) -->
 </svg>

@@ -8,7 +8,7 @@
 </head>
 <body>
   <header class="header" role="banner">
-    <img src="assets/incidenciapp-logo.svg" alt="" class="logo" aria-hidden="true">
+    <img src="assets/logo.svg" alt="" class="logo" aria-hidden="true">
     <h1>IncidenciApp</h1>
   </header>
 
@@ -26,9 +26,11 @@
           <tr>
             <th scope="col">ID</th>
             <th scope="col">Descripción</th>
+            <th id="th-ubicacion" scope="col">Ubicación</th>
             <th scope="col">Fecha</th>
-            <th scope="col">Estado</th>
-            <th scope="col">Acciones</th>
+            <th id="th-estado" scope="col">Estado</th>
+            <th id="th-tecnico" scope="col">Técnico</th>
+            <th id="th-acciones" scope="col">Acciones</th>
           </tr>
         </thead>
         <tbody id="tbody-incidencias">
@@ -65,7 +67,7 @@
         </div>
         <div class="form-group">
           <label for="ubicacion">Ubicación <span class="requerido" aria-hidden="true">*</span></label>
-          <input type="text" id="ubicacion" name="ubicacion" required placeholder="Ej: Planta 2, Sala de servidores">
+          <input type="text" id="ubicacion" name="ubicacion" required placeholder="Indica la ubicación...">
         </div>
         <div class="form-actions">
           <button type="button" class="btn btn-secondary" data-cerrar-modal="modal-crear">Cancelar</button>
@@ -89,12 +91,12 @@
       <form id="form-asignar" class="form" novalidate>
         <input type="hidden" name="idIncidencia" id="asignar-id">
         <div class="form-group">
-          <label for="nombreTecnico">Nombre del técnico <span class="requerido" aria-hidden="true">*</span></label>
-          <input type="text" id="nombreTecnico" name="nombreTecnico" required placeholder="Nombre completo">
+          <label for="nombre">Nombre del técnico <span class="requerido" aria-hidden="true">*</span></label>
+          <input type="text" id="nombre" name="nombre" required placeholder="Nombre completo">
         </div>
         <div class="form-group">
-          <label for="telefonoTecnico">Teléfono <span class="requerido" aria-hidden="true">*</span></label>
-          <input type="tel" id="telefonoTecnico" name="telefonoTecnico" pattern="\d{9}" maxlength="9" required placeholder="9 dígitos" aria-describedby="tel-help">
+          <label for="telefono">Teléfono <span class="requerido" aria-hidden="true">*</span></label>
+          <input type="tel" id="telefono" name="telefono" pattern="\d{9}" maxlength="9" required placeholder="9 dígitos" aria-describedby="tel-help">
           <span id="tel-help" class="ayuda">Solo 9 dígitos numéricos</span>
         </div>
         <div class="form-actions">

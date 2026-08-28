@@ -1,4 +1,4 @@
-package incidencias.rest.dto;
+package incidencias.rest.dto.in;
 
 import java.io.Serializable;
 
@@ -8,66 +8,67 @@ import javax.validation.constraints.NotBlank;
  * DTO para asignar una incidencia a un técnico.
  */
 @SuppressWarnings("serial")
-public class AsignarIncidenciaDto implements Serializable {
+public class AsignarTecnicoIncidenciaDto implements Serializable {
 	
 	/**
 	 * Nombre del técnico asignado a la incidencia.
 	 */
 	@NotBlank
-	private String nombreTecnico;
+	private String nombre;
 	
 	/**
 	 * Teléfono del técnico asignado a la incidencia.
 	 */
 	@NotBlank
-	private String telefonoTecnico;
+	private String telefono;
 
 	/**
 	 * Constructor para crear un DTO de asignación de incidencia.
-	 * @param descripcion La descripción de la incidencia.
-	 * @param ubicacion La ubicación de la incidencia.
+	 * 
+	 * @param nombre El nombre del técnico asignado a la incidencia.
+	 * @param telefono El teléfono del técnico asignado a la incidencia.
 	 */
-	public AsignarIncidenciaDto(String nombreTecnico, String telefonoTecnico) {
-		this.nombreTecnico = nombreTecnico;
-		this.telefonoTecnico = telefonoTecnico;
+	public AsignarTecnicoIncidenciaDto(String nombre, String telefono) {
+		this.nombre = nombre;
+		this.telefono = telefono;
 	}
 	
 	/**
 	 * Constructor vacío de AsignarIncidenciaDto.
 	 */
-	public AsignarIncidenciaDto() {
+	public AsignarTecnicoIncidenciaDto() {
 	}
 
 	/**
 	 * Obtiene el nombre del técnico asignado a la incidencia.
 	 * @return El nombre del técnico asignado a la incidencia.
 	 */
-	public String getNombreTecnico() {
-		return nombreTecnico;
+	public String getNombre() {
+		return nombre;
 	}
 	
 	/**
 	 * Establece el nombre del técnico asignado a la incidencia.
-	 * @param nombreTecnico El nombre del técnico asignado a la incidencia.
+	 * @param nombre El nombre del técnico asignado a la incidencia.
 	 */
-	public void setNombreTecnico(String nombreTecnico) {
-		this.nombreTecnico = nombreTecnico;
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
 	}
 
 	/**
 	 * Obtiene el teléfono del técnico asignado a la incidencia.
 	 * @return El teléfono del técnico asignado a la incidencia.
 	 */
-	public String getTelefonoTecnico() {
-		return telefonoTecnico;
+	public String getTelefono() {
+		return telefono;
 	}
 	
 	/**
 	 * Establece el teléfono del técnico asignado a la incidencia.
-	 * @param telefonoTecnico El teléfono del técnico asignado a la incidencia.
+	 * @param telefono El teléfono del técnico asignado a la incidencia.
 	 */
-	public void setTelefonoTecnico(String telefonoTecnico) {
-		this.telefonoTecnico = telefonoTecnico;
+	public void setTelefono(String telefono) {
+		this.telefono = telefono;
 	}
 	
 }

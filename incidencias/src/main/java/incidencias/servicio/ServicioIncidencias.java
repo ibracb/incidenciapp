@@ -6,6 +6,9 @@ import java.util.stream.Collectors;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
+import incidencias.dto.IncidenciaDto;
+import incidencias.excepciones.IncidenciaNoAsignable;
+import incidencias.excepciones.IncidenciaNoResoluble;
 import incidencias.modelo.EstadoIncidencia;
 import incidencias.modelo.Incidencia;
 import incidencias.modelo.Tecnico;
@@ -39,27 +42,24 @@ public class ServicioIncidencias implements IServicioIncidencias {
 	}
 
 	@Override
-	public void asignarIncidencia(String idIncidencia, String nombreTecnico, String telefonoTecnico) throws RepositorioException, EntidadNoEncontrada {
+	public void asignarTecnicoIncidencia(String idIncidencia, String nombre, String telefono) throws RepositorioException, EntidadNoEncontrada {
 		if(idIncidencia == null || idIncidencia.matches("\\s*")) {
 			throw new IllegalArgumentException("No se ha especificado ninguna incidencia");
 		}
-		if(nombreTecnico == null || nombreTecnico.matches("\\s*")) {
+		if(nombre == null || nombre.matches("\\s*")) {
 			throw new IllegalArgumentException("No se ha especificado ningún nombre del técnico");
 		}
-		if(telefonoTecnico == null || telefonoTecnico.matches("\\s*")) {
+		if(telefono == null || telefono.matches("\\s*")) {
 			throw new IllegalArgumentException("No se ha especificado ningún teléfono del técnico");
 		}
-		if(!telefonoTecnico.matches("\\d{9}")) {
+		if(!telefono.matches("\\d{9}")) {
 			throw new IllegalArgumentException("Formato del teléfono especificado inválido. Solo 9 dígitos debe ser");
 		}
 		Incidencia incidencia = repositorioIncidencias.getById(idIncidencia);
-		if(incidencia.getEstado() == EstadoIncidencia.ASIGNADA) {
-			throw new IllegalArgumentException("La incidencia ya se encuentra asignada a un técnico");
+		if(!incidencia.getEstado().equals(EstadoIncidencia.PENDIENTE)) {
+			throw new IncidenciaNoAsignable("La incidencia debe estar en estado PENDIENTE para poder asignar un técnico");
 		}
-		if(incidencia.getEstado() == EstadoIncidencia.RESUELTA) {
-			throw new IllegalArgumentException("La incidencia ya se encuentra resuelta, no se puede asignar a un técnico");
-		}
-		Tecnico tecnico = new Tecnico(nombreTecnico, telefonoTecnico);
+		Tecnico tecnico = new Tecnico(nombre, telefono);
 		incidencia.setTecnico(tecnico);
 		incidencia.setEstado(EstadoIncidencia.ASIGNADA);
 		repositorioIncidencias.update(incidencia);
@@ -71,25 +71,23 @@ public class ServicioIncidencias implements IServicioIncidencias {
 			throw new IllegalArgumentException("No se ha especificado ninguna incidencia");
 		}
 		Incidencia incidencia = repositorioIncidencias.getById(idIncidencia);
-		if(incidencia.getEstado() == EstadoIncidencia.PENDIENTE) {
-			throw new IllegalArgumentException("La incidencia no se encuentra asignada a ningún técnico, no se puede resolver");
-		}
-		if(incidencia.getEstado() == EstadoIncidencia.RESUELTA) {
-			throw new IllegalArgumentException("La incidencia ya se encuentra resuelta");
+		if(!incidencia.getEstado().equals(EstadoIncidencia.ASIGNADA)) {
+			throw new IncidenciaNoResoluble("La incidencia debe estar en estado ASIGNADA para poder ser resuelta");
 		}
 		incidencia.setEstado(EstadoIncidencia.RESUELTA);
 		repositorioIncidencias.update(incidencia);
 	}
 
 	@Override
-	public List<IncidenciaResumen> consultarIncidencias(EstadoIncidencia estado) throws RepositorioException {
+	public List<IncidenciaDto> consultarIncidencias(EstadoIncidencia estado) throws RepositorioException {
 		return repositorioIncidencias.findByEstado(estado).stream()
-				.map(incidencia -> toIncidenciaResumen(incidencia))
+				.map(incidencia -> toDto(incidencia))
 				.collect(Collectors.toList());
 	}
 	
-	private IncidenciaResumen toIncidenciaResumen(Incidencia incidencia) {
-		return new IncidenciaResumen(incidencia.getId(), incidencia.getDescripcion(), incidencia.getFecha());
+	private IncidenciaDto toDto(Incidencia incidencia) {
+		return new IncidenciaDto(incidencia.getId(), incidencia.getDescripcion(),
+				incidencia.getUbicacion(), incidencia.getFecha(), incidencia.getEstado(), incidencia.getTecnico());
 	}
 
 }

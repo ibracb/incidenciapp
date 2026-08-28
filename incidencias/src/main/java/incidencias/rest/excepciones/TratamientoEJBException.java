@@ -1,10 +1,12 @@
-package incidencias.rest;
+package incidencias.rest.excepciones;
 
 import javax.ejb.EJBException;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
+import incidencias.excepciones.IncidenciaNoAsignable;
+import incidencias.excepciones.IncidenciaNoResoluble;
 import repositorio.EntidadNoEncontrada;
 import repositorio.RepositorioException;
 
@@ -18,6 +20,16 @@ public class TratamientoEJBException implements ExceptionMapper<EJBException> {
 	@Override
 	public Response toResponse(EJBException ex) {
 		Throwable cause = ex.getCause();
+		
+		if(cause instanceof IncidenciaNoResoluble) {
+			return Response.status(Response.Status.CONFLICT)
+					.entity(cause.getMessage()).build();
+		}
+		
+		if(cause instanceof IncidenciaNoAsignable) {
+			return Response.status(Response.Status.CONFLICT)
+					.entity(cause.getMessage()).build();
+		}
 		
 		if (cause instanceof IllegalArgumentException) {
 			return Response.status(Response.Status.BAD_REQUEST)

@@ -1,4 +1,4 @@
-package incidencias.rest.dto;
+package incidencias.rest.dto.in;
 
 import java.io.Serializable;
 

@@ -10,12 +10,29 @@ function escaparHtml(texto) {
   return div.innerHTML;
 }
 
-export function renderLista(incidencias, porFiltro = false) {
+let handlerCrear = null, handlerAsignar = null, handlerConfirmar = null;
+
+export function renderLista(incidencias, { mostrarEstado = true, estadoFiltro = null } = {}) {
   const tbody = document.getElementById('tbody-incidencias');
+  const thEstado = document.getElementById('th-estado');
+  const thTecnico = document.getElementById('th-tecnico');
+  const thAcciones = document.getElementById('th-acciones');
+  const mostrarAcciones = mostrarEstado || estadoFiltro !== 'RESUELTA';
+  const mostrarTecnico = mostrarEstado || estadoFiltro !== 'PENDIENTE';
+  if (thEstado) {
+    thEstado.style.display = mostrarEstado ? '' : 'none';
+  }
+  if (thTecnico) {
+    thTecnico.style.display = mostrarTecnico ? '' : 'none';
+  }
+  if (thAcciones) {
+    thAcciones.style.display = mostrarAcciones ? '' : 'none';
+  }
   if (!tbody) return;
 
   if (!incidencias || incidencias.length === 0) {
-    tbody.innerHTML = '<tr class="empty-state"><td colspan="5">No hay incidencias</td></tr>';
+    const colspan = 4 + (mostrarEstado ? 1 : 0) + (mostrarTecnico ? 1 : 0) + (mostrarAcciones ? 1 : 0);
+    tbody.innerHTML = `<tr class="empty-state"><td colspan="${colspan}">No hay incidencias</td></tr>`;
     return;
   }
 
@@ -25,28 +42,57 @@ export function renderLista(incidencias, porFiltro = false) {
     const idCorto = truncarId(id);
     const fecha = formatearFecha(resumen.fecha);
 
-    // Si porFiltro es true, no insertamos botones en la celda ahora;
-    // los añadiremos después desde app.js mediante delegación de eventos.
-    // Si porFiltro es false (vista "Todas"), dejamos la celda vacía.
-    const celdasAcciones = porFiltro
-      ? '<td class="acciones-cell"><!-- accion por filtrar --></td>'
-      : '<td class="acciones-cell"></td>';
+    // Determinamos el botón de acción:
+    // - Si mostrarEstado (vista "Todas"): por datos del backend (resumen.estado)
+    // - Si no (otras vistas): por el filtro activo (estadoFiltro)
+    let celdasAcciones = '';
+    if (mostrarAcciones) {
+      let accion = null;
+      if (mostrarEstado) {
+        const e = (resumen.estado || '').trim().toUpperCase();
+        if (e === 'PENDIENTE') accion = 'asignar';
+        else if (e === 'ASIGNADA') accion = 'resolver';
+      } else if (estadoFiltro === 'PENDIENTE') {
+        accion = 'asignar';
+      } else if (estadoFiltro === 'ASIGNADA') {
+        accion = 'resolver';
+      }
 
-    // Construimos el badge opcionalmente si el backend envía estado;
-    // si no, mostramos "—"
-    const estadoBadge = resumen.estado
-      ? `badge-${resumen.estado.toLowerCase()}`
+      if (accion === 'asignar') {
+        celdasAcciones = `<td class="acciones-cell"><button type="button" class="btn-accion btn-asignar" data-accion="asignar">Asignar</button></td>`;
+      } else if (accion === 'resolver') {
+        celdasAcciones = `<td class="acciones-cell"><button type="button" class="btn-accion btn-resolver" data-accion="resolver">Resolver</button></td>`;
+      } else {
+        celdasAcciones = '<td class="acciones-cell"><span class="ayuda" style="display:inline;">—</span></td>';
+      }
+    }
+
+    // Celda de estado solo si mostrarEstado
+    const celdaEstado = mostrarEstado
+      ? `<td><span class="badge ${resumen.estado ? `badge-${resumen.estado.toLowerCase()}` : ''}">${resumen.estado ? resumen.estado.charAt(0) + resumen.estado.slice(1).toLowerCase() : '—'}</span></td>`
       : '';
-    const estadoTexto = resumen.estado
-      ? resumen.estado.charAt(0) + resumen.estado.slice(1).toLowerCase()
-      : '—';
+
+    // Celda de ubicación (siempre visible)
+    const celdaUbicacion = `<td class="ubicacion-cell" title="${escaparHtml(resumen.ubicacion || '')}">${escaparHtml(resumen.ubicacion || '—')}</td>`;
+
+    // Celda de técnico solo si mostrarTecnico
+    let celdaTecnico = '';
+    if (mostrarTecnico) {
+      const t = resumen.tecnico;
+      const texto = (t && t.nombre)
+        ? `${escaparHtml(t.nombre)}${t.telefono ? ` · ${escaparHtml(t.telefono)}` : ''}`
+        : '—';
+      celdaTecnico = `<td class="tecnico-cell">${texto}</td>`;
+    }
 
     return `
       <tr data-id="${escaparHtml(id)}" data-estado="${escaparHtml(resumen.estado || '')}">
         <td class="id-cell" title="${escaparHtml(id)}">${idCorto}</td>
         <td class="desc-cell" title="${escaparHtml(resumen.descripcion)}">${escaparHtml(resumen.descripcion)}</td>
+        ${celdaUbicacion}
         <td class="fecha-cell">${fecha}</td>
-        <td><span class="badge ${estadoBadge}">${estadoTexto}</span></td>
+        ${celdaEstado}
+        ${celdaTecnico}
         ${celdasAcciones}
       </tr>
     `;
@@ -136,7 +182,8 @@ export function abrirModalCrear(onSubmit) {
   form.reset();
   limpiarErroresForm(form);
 
-  const handler = (e) => {
+  if (handlerCrear) form.removeEventListener('submit', handlerCrear);
+  handlerCrear = (e) => {
     e.preventDefault();
     if (!form.checkValidity()) {
       form.reportValidity();
@@ -144,10 +191,10 @@ export function abrirModalCrear(onSubmit) {
     }
     const descripcion = form.descripcion.value.trim();
     const ubicacion = form.ubicacion.value.trim();
-    form.removeEventListener('submit', handler);
+    form.removeEventListener('submit', handlerCrear);
     onSubmit(descripcion, ubicacion);
   };
-  form.addEventListener('submit', handler, { once: true });
+  form.addEventListener('submit', handlerCrear, { once: true });
 
   abrirModal('modal-crear');
 }
@@ -160,24 +207,25 @@ export function abrirModalAsignar(id, onSubmit) {
 
   document.getElementById('asignar-id').value = id;
 
-  const handler = (e) => {
+  if (handlerAsignar) form.removeEventListener('submit', handlerAsignar);
+  handlerAsignar = (e) => {
     e.preventDefault();
     if (!form.checkValidity()) {
       form.reportValidity();
       return;
     }
-    const nombreTecnico = form.nombreTecnico.value.trim();
-    const telefonoTecnico = form.telefonoTecnico.value.trim();
+    const nombre = form.nombre.value.trim();
+    const telefono = form.telefono.value.trim();
 
-    if (!/^\d{9}$/.test(telefonoTecnico)) {
-      mostrarErrorForm(form, 'telefonoTecnico', 'El teléfono debe tener exactamente 9 dígitos numéricos');
+    if (!/^\d{9}$/.test(telefono)) {
+      mostrarErrorForm(form, 'telefono', 'El teléfono debe tener exactamente 9 dígitos numéricos');
       return;
     }
 
-    form.removeEventListener('submit', handler);
-    onSubmit(nombreTecnico, telefonoTecnico);
+    form.removeEventListener('submit', handlerAsignar);
+    onSubmit(nombre, telefono);
   };
-  form.addEventListener('submit', handler, { once: true });
+  form.addEventListener('submit', handlerAsignar, { once: true });
 
   abrirModal('modal-asignar');
 }
@@ -189,7 +237,8 @@ export function abrirModalConfirmar(mensaje, onConfirm) {
   document.getElementById('modal-confirmar-mensaje').textContent = mensaje;
 
   const btnConfirmar = document.getElementById('btn-confirmar-accion');
-  const handlerConfirmar = () => {
+  if (handlerConfirmar) btnConfirmar.removeEventListener('click', handlerConfirmar);
+  handlerConfirmar = () => {
     btnConfirmar.removeEventListener('click', handlerConfirmar);
     cerrarModal('modal-confirmar');
     onConfirm();

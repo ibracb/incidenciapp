@@ -36,10 +36,10 @@ export async function crearIncidencia(descripcion, ubicacion) {
   });
 }
 
-export async function asignarIncidencia(id, nombreTecnico, telefonoTecnico) {
+export async function asignarTecnicoIncidencia(id, nombre, telefono) {
   return request(`${API_BASE}/${encodeURIComponent(id)}/asignar`, {
     method: 'PATCH',
-    body: JSON.stringify({ nombreTecnico, telefonoTecnico })
+    body: JSON.stringify({ nombre, telefono })
   });
 }
 

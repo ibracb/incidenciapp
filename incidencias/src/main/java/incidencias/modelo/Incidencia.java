@@ -33,14 +33,14 @@ public class Incidencia implements Identificable, Serializable {
 	private String ubicacion;
 	
 	/**
-	 * Estado actual de la incidencia (pendiente, asignada, o resuelta).
-	 */
-	private EstadoIncidencia estado;
-	
-	/**
 	 * Fecha y hora en que se reportó la incidencia.
 	 */
 	private LocalDateTime fecha;
+	
+	/**
+	 * Estado actual de la incidencia (pendiente, asignada, o resuelta).
+	 */
+	private EstadoIncidencia estado;
 	
 	/**
 	 * Técnico asignado para resolver la incidencia.
@@ -57,8 +57,8 @@ public class Incidencia implements Identificable, Serializable {
 	public Incidencia(String descripcion, String ubicacion) {
 		this.descripcion = descripcion;
 		this.ubicacion = ubicacion;
-		this.estado = EstadoIncidencia.PENDIENTE;
 		this.fecha = LocalDateTime.now();
+		this.estado = EstadoIncidencia.PENDIENTE;
 	}
 	
 	/**
@@ -114,6 +114,22 @@ public class Incidencia implements Identificable, Serializable {
 	public void setUbicacion(String ubicacion) {
 		this.ubicacion = ubicacion;
 	}
+	
+	/**
+	 * Obtiene la fecha y hora en que se reportó la incidencia.
+	 * @return La fecha y hora en que se reportó la incidencia.
+	 */
+	public LocalDateTime getFecha() {
+		return fecha;
+	}
+
+	/**
+	 * Establece la fecha y hora en que se reportó la incidencia.
+	 * @param fecha La fecha y hora en que se reportó la incidencia a establecer.
+	 */
+	public void setFecha(LocalDateTime fecha) {
+		this.fecha = fecha;
+	}
 
 	/**
 	 * Obtiene el estado actual de la incidencia.
@@ -129,22 +145,6 @@ public class Incidencia implements Identificable, Serializable {
 	 */
 	public void setEstado(EstadoIncidencia estado) {
 		this.estado = estado;
-	}
-
-	/**
-	 * Obtiene la fecha y hora en que se reportó la incidencia.
-	 * @return La fecha y hora en que se reportó la incidencia.
-	 */
-	public LocalDateTime getFecha() {
-		return fecha;
-	}
-
-	/**
-	 * Establece la fecha y hora en que se reportó la incidencia.
-	 * @param fecha La fecha y hora en que se reportó la incidencia a establecer.
-	 */
-	public void setFecha(LocalDateTime fecha) {
-		this.fecha = fecha;
 	}
 
 	/**

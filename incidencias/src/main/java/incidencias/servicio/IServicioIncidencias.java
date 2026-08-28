@@ -2,6 +2,7 @@ package incidencias.servicio;
 
 import java.util.List;
 
+import incidencias.dto.IncidenciaDto;
 import incidencias.modelo.EstadoIncidencia;
 import repositorio.EntidadNoEncontrada;
 import repositorio.RepositorioException;
@@ -23,12 +24,12 @@ public interface IServicioIncidencias {
 	/**
 	 * Asigna un técnico a una incidencia específica.
 	 * @param idIncidencia El ID de la incidencia a la que se asignará el técnico.
-	 * @param nombreTecnico El nombre del técnico asignado.
-	 * @param telefonoTecnico El teléfono del técnico asignado.
+	 * @param nombre El nombre del técnico asignado.
+	 * @param telefono El teléfono del técnico asignado.
 	 * @throws RepositorioException	 Si ocurre un error al acceder al repositorio de incidencias.
 	 * @throws EntidadNoEncontrada  Si no se encuentra la incidencia con el ID proporcionado.
 	 */
-	void asignarIncidencia(String idIncidencia, String nombreTecnico, String telefonoTecnico) throws RepositorioException, EntidadNoEncontrada;
+	void asignarTecnicoIncidencia(String idIncidencia, String nombre, String telefono) throws RepositorioException, EntidadNoEncontrada;
 	
 	/**
 	 * Marca una incidencia como resuelta.
@@ -44,6 +45,6 @@ public interface IServicioIncidencias {
 	 * @return Una lista de resúmenes de las incidencias.
 	 * @throws RepositorioException	 Si ocurre un error al acceder al repositorio de incidencias.
 	 */
-	List<IncidenciaResumen> consultarIncidencias(EstadoIncidencia estado) throws RepositorioException;
+	List<IncidenciaDto> consultarIncidencias(EstadoIncidencia estado) throws RepositorioException;
 	
 }

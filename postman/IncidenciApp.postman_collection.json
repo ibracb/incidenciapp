@@ -1,0 +1,460 @@
+{
+  "info": {
+    "_postman_id": "6a8d8991-be75-4682-a68c-2d7a8f9649e7",
+    "name": "IncidenciApp",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "52311993",
+    "_collection_link": "https://go.postman.co/collection/52311993-6a8d8991-be75-4682-a68c-2d7a8f9649e7?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Register first issue",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Register first issue: should return 201 Created\", function () {\r",
+              "    pm.response.to.have.status(201);\r",
+              "});\r",
+              "\r",
+              "let location = pm.response.headers.get(\"Location\");\r",
+              "\r",
+              "let id = location.split(\"/\").pop();\r",
+              "\r",
+              "pm.environment.set(\"firstIssueId\", id);\r",
+              "\r",
+              "console.log(\"First issue id saved:\", id);"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"descripcion\": \"Vecinos ponen música alta a las 2 de la madrugada\",\r\n    \"ubicacion\": \"2ª planta\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://{{host}}:{{port}}/api/incidencias",
+          "protocol": "http",
+          "host": [
+            "{{host}}"
+          ],
+          "port": "{{port}}",
+          "path": [
+            "api",
+            "incidencias"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Register second issue",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Register second issue: should return 201 Created\", function () {\r",
+              "    pm.response.to.have.status(201);\r",
+              "});\r",
+              "\r",
+              "let location = pm.response.headers.get(\"Location\");\r",
+              "\r",
+              "let id = location.split(\"/\").pop();\r",
+              "\r",
+              "pm.environment.set(\"secondIssueId\", id);\r",
+              "\r",
+              "console.log(\"Second issue id saved:\", id);"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"descripcion\": \"La puerta de entrada está agujereada\",\r\n    \"ubicacion\": \"1ª planta, piso D\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://{{host}}:{{port}}/api/incidencias",
+          "protocol": "http",
+          "host": [
+            "{{host}}"
+          ],
+          "port": "{{port}}",
+          "path": [
+            "api",
+            "incidencias"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Register third issue",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Register third issue: should return 201 Created\", function () {\r",
+              "    pm.response.to.have.status(201);\r",
+              "});\r",
+              "\r",
+              "let location = pm.response.headers.get(\"Location\");\r",
+              "\r",
+              "let id = location.split(\"/\").pop();\r",
+              "\r",
+              "pm.environment.set(\"thirdIssueId\", id);\r",
+              "\r",
+              "console.log(\"Third issue id saved:\", id);"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"descripcion\": \"Han dejado la basura en su puerta\",\r\n    \"ubicacion\": \"4ª planta, piso H\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://{{host}}:{{port}}/api/incidencias",
+          "protocol": "http",
+          "host": [
+            "{{host}}"
+          ],
+          "port": "{{port}}",
+          "path": [
+            "api",
+            "incidencias"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Assign technician first issue",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Assign technician first issue: should return 204 No Content\", function () {\r",
+              "    pm.response.to.have.status(204);\r",
+              "});\r",
+              "\r",
+              "console.log(\"First issue technician assigned\");"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "PATCH",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"nombre\": \"Antonio García López\",\r\n    \"telefono\": \"777777777\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://{{host}}:{{port}}/api/incidencias/{{firstIssueId}}/asignar",
+          "protocol": "http",
+          "host": [
+            "{{host}}"
+          ],
+          "port": "{{port}}",
+          "path": [
+            "api",
+            "incidencias",
+            "{{firstIssueId}}",
+            "asignar"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Assign technician second issue",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Assign technician second issue: should return 204 No Content\", function () {\r",
+              "    pm.response.to.have.status(204);\r",
+              "});\r",
+              "\r",
+              "console.log(\"Second issue technician assigned\");"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "PATCH",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"nombre\": \"Raúl González Gómez\",\r\n    \"telefono\": \"888888888\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://{{host}}:{{port}}/api/incidencias/{{secondIssueId}}/asignar",
+          "protocol": "http",
+          "host": [
+            "{{host}}"
+          ],
+          "port": "{{port}}",
+          "path": [
+            "api",
+            "incidencias",
+            "{{secondIssueId}}",
+            "asignar"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Solve first issue",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Solve first issue: should return 204 No Content\", function () {\r",
+              "    pm.response.to.have.status(204);\r",
+              "});\r",
+              "\r",
+              "console.log(\"First issue solved:\");"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "PATCH",
+        "header": [],
+        "url": {
+          "raw": "http://{{host}}:{{port}}/api/incidencias/{{firstIssueId}}/resolver",
+          "protocol": "http",
+          "host": [
+            "{{host}}"
+          ],
+          "port": "{{port}}",
+          "path": [
+            "api",
+            "incidencias",
+            "{{firstIssueId}}",
+            "resolver"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get pending incidents",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Get pending incidents: should return 200 OK\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://{{host}}:{{port}}/api/incidencias?estado=PENDIENTE",
+          "protocol": "http",
+          "host": [
+            "{{host}}"
+          ],
+          "port": "{{port}}",
+          "path": [
+            "api",
+            "incidencias"
+          ],
+          "query": [
+            {
+              "key": "estado",
+              "value": "PENDIENTE"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get assigned incidents",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Get assigned incidents: should return 200 OK\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://{{host}}:{{port}}/api/incidencias?estado=ASIGNADA",
+          "protocol": "http",
+          "host": [
+            "{{host}}"
+          ],
+          "port": "{{port}}",
+          "path": [
+            "api",
+            "incidencias"
+          ],
+          "query": [
+            {
+              "key": "estado",
+              "value": "ASIGNADA"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get solved incidents",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Get solved incidents: should return 200 OK\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://{{host}}:{{port}}/api/incidencias?estado=RESUELTA",
+          "protocol": "http",
+          "host": [
+            "{{host}}"
+          ],
+          "port": "{{port}}",
+          "path": [
+            "api",
+            "incidencias"
+          ],
+          "query": [
+            {
+              "key": "estado",
+              "value": "RESUELTA"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get all incidents",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Get all incidents: should return 200 OK\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://{{host}}:{{port}}/api/incidencias",
+          "protocol": "http",
+          "host": [
+            "{{host}}"
+          ],
+          "port": "{{port}}",
+          "path": [
+            "api",
+            "incidencias"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}

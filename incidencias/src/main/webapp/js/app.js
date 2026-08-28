@@ -5,29 +5,53 @@ let estadoActual = null;
 
 async function cargar() {
   try {
-    mostrarEsqueletos();
-    // Si el filtro es "Todas" (estadoActual === null), porFiltro = false;
-    // si hay un filtro específico (Pendientes/Asignadas/Resueltas), porFiltro = true.
-    const porFiltro = estadoActual !== null;
+    const mostrarEstado = estadoActual === null;
+    const mostrarAcciones = mostrarEstado || estadoActual !== 'RESUELTA';
+    const mostrarTecnico = mostrarEstado || estadoActual !== 'PENDIENTE';
+    mostrarEsqueletos(mostrarEstado, mostrarAcciones, mostrarTecnico);
     const data = await api.listarIncidencias(estadoActual);
-    ui.renderLista(data, porFiltro);
+    ui.renderLista(data, { mostrarEstado, estadoFiltro: estadoActual });
   } catch (err) {
     ui.mostrarToast(err.message, 'error');
+    const mostrarEstado = estadoActual === null;
+    const mostrarAcciones = mostrarEstado || estadoActual !== 'RESUELTA';
+    const mostrarTecnico = mostrarEstado || estadoActual !== 'PENDIENTE';
+    const thEstado = document.getElementById('th-estado');
+    if (thEstado) thEstado.style.display = mostrarEstado ? '' : 'none';
+    const thTecnico = document.getElementById('th-tecnico');
+    if (thTecnico) thTecnico.style.display = mostrarTecnico ? '' : 'none';
+    const thAcciones = document.getElementById('th-acciones');
+    if (thAcciones) thAcciones.style.display = mostrarAcciones ? '' : 'none';
     const tbody = document.getElementById('tbody-incidencias');
-    if (tbody) tbody.innerHTML = '<tr class="empty-state"><td colspan="5">Error al cargar incidencias</td></tr>';
+    if (tbody) {
+      const colspan = 4 + (mostrarEstado ? 1 : 0) + (mostrarTecnico ? 1 : 0) + (mostrarAcciones ? 1 : 0);
+      tbody.innerHTML = `<tr class="empty-state"><td colspan="${colspan}">Error al cargar incidencias</td></tr>`;
+    }
   }
 }
 
-function mostrarEsqueletos() {
+function mostrarEsqueletos(mostrarEstado = true, mostrarAcciones = true, mostrarTecnico = true) {
+  const thEstado = document.getElementById('th-estado');
+  if (thEstado) thEstado.style.display = mostrarEstado ? '' : 'none';
+  const thTecnico = document.getElementById('th-tecnico');
+  if (thTecnico) thTecnico.style.display = mostrarTecnico ? '' : 'none';
+  const thAcciones = document.getElementById('th-acciones');
+  if (thAcciones) thAcciones.style.display = mostrarAcciones ? '' : 'none';
   const tbody = document.getElementById('tbody-incidencias');
   if (!tbody) return;
+  const celdaEstado = mostrarEstado ? '<td><div class="skeleton skeleton-badge"></div></td>' : '';
+  const celdaUbicacion = '<td><div class="skeleton skeleton-desc"></div></td>';
+  const celdaTecnico = mostrarTecnico ? '<td><div class="skeleton skeleton-desc"></div></td>' : '';
+  const celdaAcciones = mostrarAcciones ? '<td></td>' : '';
   tbody.innerHTML = Array(5).fill(0).map(() => `
     <tr class="skeleton-row">
       <td><div class="skeleton skeleton-id"></div></td>
       <td><div class="skeleton skeleton-desc"></div></td>
+      ${celdaUbicacion}
       <td><div class="skeleton skeleton-fecha"></div></td>
-      <td><div class="skeleton skeleton-badge"></div></td>
-      <td></td>
+      ${celdaEstado}
+      ${celdaTecnico}
+      ${celdaAcciones}
     </tr>
   `).join('');
 }
@@ -63,28 +87,20 @@ document.getElementById('btn-nueva').addEventListener('click', () => {
 });
 
 document.getElementById('tbody-incidencias').addEventListener('click', async (e) => {
-  const fila = e.target.closest('tr');
+  const btnAccion = e.target.closest('.btn-accion');
+  if (!btnAccion) return; // el clic no fue sobre un botón de acción
+
+  const fila = btnAccion.closest('tr');
   if (!fila) return;
   const id = fila.dataset.id;
-  const estadoFila = fila.dataset.estado; // viene del backend o '-'
+  const accion = btnAccion.dataset.accion; // 'asignar' o 'resolver'
 
-  // Lógica por filtro activo:
-  // - Si el filtro es "Todas" (estadoActual === null): no hacer acción, solo info
-  // - Si el filtro es "Pendientes": acción "Asignar"
-  // - Si el filtro es "Asignadas": acción "Resolver"
-  // - Si el filtro es "Resueltas": no hacer nada
-  if (estadoActual === null) {
-    // Vista "Todas": sin acciones; puede hacer info adicional si se quiere
-    ui.mostrarToast('Vista "Todas": no hay acción disponible', 'info');
-    return;
-  }
-
-  if (estadoActual === 'PENDIENTE') {
-    ui.abrirModalAsignar(id, async (nombreTecnico, telefonoTecnico) => {
+  if (accion === 'asignar') {
+    ui.abrirModalAsignar(id, async (nombre, telefono) => {
       const btn = document.querySelector('#modal-asignar .btn-primary');
       ui.setLoading(btn, true);
       try {
-        await api.asignarIncidencia(id, nombreTecnico, telefonoTecnico);
+        await api.asignarTecnicoIncidencia(id, nombre, telefono);
         ui.cerrarModal('modal-asignar');
         ui.mostrarToast('Incidencia asignada correctamente', 'success');
         cargar();
@@ -94,7 +110,7 @@ document.getElementById('tbody-incidencias').addEventListener('click', async (e)
         ui.setLoading(btn, false);
       }
     });
-  } else if (estadoActual === 'ASIGNADA') {
+  } else if (accion === 'resolver') {
     ui.abrirModalConfirmar(
       '¿Confirmas que quieres marcar esta incidencia como resuelta? Esta acción no se puede deshacer.',
       async () => {

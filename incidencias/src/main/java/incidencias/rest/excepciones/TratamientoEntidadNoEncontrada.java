@@ -1,4 +1,4 @@
-package incidencias.rest;
+package incidencias.rest.excepciones;
 
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
