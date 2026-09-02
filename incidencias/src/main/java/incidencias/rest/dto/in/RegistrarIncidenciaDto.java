@@ -4,21 +4,26 @@ import java.io.Serializable;
 
 import javax.validation.constraints.NotBlank;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 /**
  * DTO para registrar una nueva incidencia.
  */
+@Schema(description = "Datos de entrada para registrar una nueva incidencia")
 @SuppressWarnings("serial")
 public class RegistrarIncidenciaDto implements Serializable {
 	
 	/**
 	 * Descripción de la incidencia.
 	 */
+	@Schema(description = "Descripción de la incidencia", example = "Fuga de agua en el baño principal")
 	@NotBlank
 	private String descripcion;
 	
 	/**
 	 * Ubicación de la incidencia.
 	 */
+	@Schema(description = "Ubicación de la incidencia", example = "Edificio A, Planta 2, Baño 201")
 	@NotBlank
 	private String ubicacion;
 

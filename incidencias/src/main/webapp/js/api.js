@@ -1,4 +1,4 @@
-const API_BASE = '/api/incidencias';
+const API_BASE = '/incidenciapp/api/incidencias';
 
 async function request(url, options = {}) {
   const res = await fetch(url, {

@@ -11,11 +11,11 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
-import incidencias.dto.IncidenciaDto;
 import incidencias.modelo.EstadoIncidencia;
 import incidencias.rest.dto.in.AsignarTecnicoIncidenciaDto;
 import incidencias.rest.dto.in.RegistrarIncidenciaDto;
-import incidencias.rest.dto.out.DtoExtendido;
+import incidencias.rest.dto.out.IncidenciaDtoExtendido;
+import incidencias.rest.dto.out.IncidenciaDto;
 import incidencias.servicio.IServicioIncidencias;
 import repositorio.EntidadNoEncontrada;
 import repositorio.RepositorioException;
@@ -72,11 +72,11 @@ public class ControladorIncidencias implements IncidenciasApi {
 			}
 		}
 		List<IncidenciaDto> resultado = servicioIncidencias.consultarIncidencias(estadoEnum);
-		List<DtoExtendido> extendidos = new LinkedList<>();
-		resultado.forEach(incidenciaResumen -> {
-			DtoExtendido resumenExtendido = new DtoExtendido();
-			resumenExtendido.setResumen(incidenciaResumen);
-			String id = incidenciaResumen.getId();
+		List<IncidenciaDtoExtendido> extendidos = new LinkedList<>();
+		resultado.forEach(incidenciaDto -> {
+			IncidenciaDtoExtendido resumenExtendido = new IncidenciaDtoExtendido();
+			resumenExtendido.setDto(incidenciaDto);
+			String id = incidenciaDto.getId();
 			URI nuevaURL = this.uriInfo.getAbsolutePathBuilder().path(id).build();
 			resumenExtendido.setUrl(nuevaURL.toString());
 			extendidos.add(resumenExtendido);

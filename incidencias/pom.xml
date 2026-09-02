@@ -46,6 +46,6 @@
 				</configuration>
 			</plugin>
 		</plugins>
-		<finalName>ROOT</finalName>
+		<finalName>incidenciapp</finalName>
 	</build>
 </project>

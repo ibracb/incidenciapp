@@ -66,12 +66,21 @@ Each variable in [`.env.example`](.env.example) is commented with its descriptio
 
 ## Compilation and execution
 
-Start the database (MongoDB + Mongo Express):
+### Database
+
+**Production** (MongoDB only):
 ```bash
 docker compose up -d
 ```
 
-Compile and start the application with Wildfly:
+**Development** (MongoDB + Mongo Express):
+```bash
+docker compose -f compose.yaml -f compose.dev.yaml up -d
+```
+
+### Application
+
+Compile and start the application with WildFly:
 ```bash
 cd incidencias
 mvn wildfly:run
@@ -79,9 +88,9 @@ mvn wildfly:run
 
 ## Web access
 
-- **Application:** http://localhost:8080
-- **Swagger UI:** http://localhost:8080/api/swagger-ui
-- **OpenAPI specification (JSON):** http://localhost:8080/api/openapi.json
+- **Application:** http://localhost:8080/incidenciapp
+- **Swagger UI:** http://localhost:8080/incidenciapp/api/swagger-ui
+- **OpenAPI specification (JSON):** http://localhost:8080/incidenciapp/api/openapi.json
 - **Mongo Express:** http://localhost:8082
 
 ## Documentation

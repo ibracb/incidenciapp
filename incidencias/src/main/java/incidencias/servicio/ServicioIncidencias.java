@@ -6,13 +6,13 @@ import java.util.stream.Collectors;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
-import incidencias.dto.IncidenciaDto;
 import incidencias.excepciones.IncidenciaNoAsignable;
 import incidencias.excepciones.IncidenciaNoResoluble;
 import incidencias.modelo.EstadoIncidencia;
 import incidencias.modelo.Incidencia;
 import incidencias.modelo.Tecnico;
 import incidencias.repositorio.RepositorioIncidenciasAdHoc;
+import incidencias.rest.dto.out.IncidenciaDto;
 import repositorio.EntidadNoEncontrada;
 import repositorio.RepositorioException;
 

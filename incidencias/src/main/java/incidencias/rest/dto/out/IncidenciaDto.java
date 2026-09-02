@@ -1,45 +1,53 @@
-package incidencias.dto;
+package incidencias.rest.dto.out;
 
 import java.time.LocalDateTime;
 
 import incidencias.modelo.EstadoIncidencia;
 import incidencias.modelo.Tecnico;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * Clase que representa un resumen de una incidencia, con la información
  * mostrada en el listado: identificador, descripción, ubicación, fecha de
  * reporte, estado y el técnico asignado (si lo tuviera).
  */
+@Schema(description = "Resumen de una incidencia con toda su información")
 public class IncidenciaDto {
 	
 	/**
 	 * Identificador único de la incidencia.
 	 */
+	@Schema(description = "Identificador único de la incidencia", example = "64a1b2c3d4e5f6a7b8c9d0e1")
 	private String id;
 	
 	/**
 	 * Descripción de la incidencia reportada.
 	 */
+	@Schema(description = "Descripción de la incidencia reportada", example = "Fuga de agua en el baño principal")
 	private String descripcion;
 	
 	/**
 	 * Ubicación donde se ha reportado la incidencia.
 	 */
+	@Schema(description = "Ubicación donde se ha reportado la incidencia", example = "Edificio A, Planta 2, Baño 201")
 	private String ubicacion;
 	
 	/**
 	 * Fecha y hora en que se reportó la incidencia.
 	 */
+	@Schema(description = "Fecha y hora en que se reportó la incidencia (ISO 8601)", example = "2026-09-01T10:30:00")
 	private String fecha;
 	
 	/**
 	 * Estado actual de la incidencia (pendiente, asignada, o resuelta).
 	 */
+	@Schema(description = "Estado actual de la incidencia", example = "pendiente", allowableValues = {"pendiente", "asignada", "resuelta"})
 	private String estado;
 	
 	/**
 	 * Técnico asignado a la incidencia (null si aún no está asignada).
 	 */
+	@Schema(description = "Técnico asignado a la incidencia (null si no está asignada)")
 	private TecnicoDto tecnico;
 	
 	/**
@@ -114,16 +122,19 @@ public class IncidenciaDto {
 	/**
 	 * Clase que representa un resumen del técnico asignado a una incidencia.
 	 */
+	@Schema(description = "Resumen del técnico asignado a la incidencia")
 	public static class TecnicoDto {
 		
 		/**
 		 * Nombre del técnico.
 		 */
+		@Schema(description = "Nombre del técnico", example = "Juan García")
 		private String nombre;
 		
 		/**
 		 * Teléfono de contacto del técnico.
 		 */
+		@Schema(description = "Teléfono de contacto del técnico", example = "612345678")
 		private String telefono;
 		
 		/**

@@ -37,7 +37,7 @@ export function renderLista(incidencias, { mostrarEstado = true, estadoFiltro = 
   }
 
   tbody.innerHTML = incidencias.map(item => {
-    const resumen = item.resumen;
+    const resumen = item.dto;
     const id = resumen.id;
     const idCorto = truncarId(id);
     const fecha = formatearFecha(resumen.fecha);

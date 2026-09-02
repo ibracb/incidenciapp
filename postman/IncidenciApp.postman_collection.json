@@ -45,7 +45,7 @@
           }
         },
         "url": {
-          "raw": "http://{{host}}:{{port}}/api/incidencias",
+          "raw": "http://{{host}}:{{port}}/incidenciapp/api/incidencias",
           "protocol": "http",
           "host": [
             "{{host}}"
@@ -97,7 +97,7 @@
           }
         },
         "url": {
-          "raw": "http://{{host}}:{{port}}/api/incidencias",
+          "raw": "http://{{host}}:{{port}}/incidenciapp/api/incidencias",
           "protocol": "http",
           "host": [
             "{{host}}"
@@ -149,7 +149,7 @@
           }
         },
         "url": {
-          "raw": "http://{{host}}:{{port}}/api/incidencias",
+          "raw": "http://{{host}}:{{port}}/incidenciapp/api/incidencias",
           "protocol": "http",
           "host": [
             "{{host}}"
@@ -195,7 +195,7 @@
           }
         },
         "url": {
-          "raw": "http://{{host}}:{{port}}/api/incidencias/{{firstIssueId}}/asignar",
+          "raw": "http://{{host}}:{{port}}/incidenciapp/api/incidencias/{{firstIssueId}}/asignar",
           "protocol": "http",
           "host": [
             "{{host}}"
@@ -243,7 +243,7 @@
           }
         },
         "url": {
-          "raw": "http://{{host}}:{{port}}/api/incidencias/{{secondIssueId}}/asignar",
+          "raw": "http://{{host}}:{{port}}/incidenciapp/api/incidencias/{{secondIssueId}}/asignar",
           "protocol": "http",
           "host": [
             "{{host}}"
@@ -282,7 +282,7 @@
         "method": "PATCH",
         "header": [],
         "url": {
-          "raw": "http://{{host}}:{{port}}/api/incidencias/{{firstIssueId}}/resolver",
+          "raw": "http://{{host}}:{{port}}/incidenciapp/api/incidencias/{{firstIssueId}}/resolver",
           "protocol": "http",
           "host": [
             "{{host}}"
@@ -319,7 +319,7 @@
         "method": "GET",
         "header": [],
         "url": {
-          "raw": "http://{{host}}:{{port}}/api/incidencias?estado=PENDIENTE",
+          "raw": "http://{{host}}:{{port}}/incidenciapp/api/incidencias?estado=PENDIENTE",
           "protocol": "http",
           "host": [
             "{{host}}"
@@ -360,7 +360,7 @@
         "method": "GET",
         "header": [],
         "url": {
-          "raw": "http://{{host}}:{{port}}/api/incidencias?estado=ASIGNADA",
+          "raw": "http://{{host}}:{{port}}/incidenciapp/api/incidencias?estado=ASIGNADA",
           "protocol": "http",
           "host": [
             "{{host}}"
@@ -401,7 +401,7 @@
         "method": "GET",
         "header": [],
         "url": {
-          "raw": "http://{{host}}:{{port}}/api/incidencias?estado=RESUELTA",
+          "raw": "http://{{host}}:{{port}}/incidenciapp/api/incidencias?estado=RESUELTA",
           "protocol": "http",
           "host": [
             "{{host}}"
@@ -442,7 +442,7 @@
         "method": "GET",
         "header": [],
         "url": {
-          "raw": "http://{{host}}:{{port}}/api/incidencias",
+          "raw": "http://{{host}}:{{port}}/incidenciapp/api/incidencias",
           "protocol": "http",
           "host": [
             "{{host}}"

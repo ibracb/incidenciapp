@@ -4,21 +4,26 @@ import java.io.Serializable;
 
 import javax.validation.constraints.NotBlank;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 /**
  * DTO para asignar una incidencia a un técnico.
  */
+@Schema(description = "Datos de entrada para asignar un técnico a una incidencia")
 @SuppressWarnings("serial")
 public class AsignarTecnicoIncidenciaDto implements Serializable {
 	
 	/**
 	 * Nombre del técnico asignado a la incidencia.
 	 */
+	@Schema(description = "Nombre del técnico asignado a la incidencia", example = "Juan García")
 	@NotBlank
 	private String nombre;
 	
 	/**
 	 * Teléfono del técnico asignado a la incidencia.
 	 */
+	@Schema(description = "Teléfono del técnico asignado a la incidencia", example = "612345678")
 	@NotBlank
 	private String telefono;
 

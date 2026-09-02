@@ -2,8 +2,8 @@ package incidencias.servicio;
 
 import java.util.List;
 
-import incidencias.dto.IncidenciaDto;
 import incidencias.modelo.EstadoIncidencia;
+import incidencias.rest.dto.out.IncidenciaDto;
 import repositorio.EntidadNoEncontrada;
 import repositorio.RepositorioException;
 
