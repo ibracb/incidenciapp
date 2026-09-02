@@ -38,7 +38,8 @@ incidenciapp/
 ├── postman/                     # Integration API tests with Postman
 ├── .env.example                 # Example environment variables
 ├── .gitignore                   # Files ignored by Git
-├── compose.yaml                 # Docker Compose file
+├── compose.dev.yaml             # Docker Compose (development)
+├── compose.yaml                 # Docker Compose (production)
 └── README.md                    # Main documentation
 ```
 
